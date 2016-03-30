@@ -1,7 +1,135 @@
 doctype html
 html
-  head
-    title= title
-    link(rel='stylesheet', href='/stylesheets/style.css')
-  body
-    block content
+    head
+        title SquareSmash|Smash it as you can!
+        
+        meta(charset='utf-8')
+        
+        meta(http-equiv='X-UA-Compatible', content='IE=edge')
+        
+        meta(name='viewport', content='width=device-width, initial-scale=1')
+        
+        meta(name='author', content='Mahmoud Ben Hassine')
+        
+        link(rel='stylesheet', href='/bower_components/bootstrap/dist/css/bootstrap.min.css')
+        
+        link(rel='stylesheet', href='/bower_components/fontawesome/css/font-awesome.min.css')
+        
+        link(rel='stylesheet', href='/bower_components/chessboardjs/css/chessboard.min.css')
+        
+        link(rel='stylesheet', href='/bower_components/messenger/build/css/messenger.css')
+        
+        link(rel='stylesheet', href='/bower_components/messenger/build/css/messenger-spinner.css')
+        
+        link(rel='stylesheet', href='/bower_components/messenger/build/css/messenger-theme-future.css')
+        
+        link(rel='stylesheet', href='/stylesheets/squaresmash.css')
+    body
+        .container
+            .header
+                ul.nav.nav-pills.pull-right
+                    li.active(class='{{#if isHomePage}} {{/if}}')
+                        a(href='/', title='Go to home page')
+                            i.fa.fa-home
+                              Home
+                    
+                    li.active(class='{{#if isPlayPage}} {{/if}}')
+                        a(href='/play', title='Create a new game')
+                            i.fa.fa-gamepad
+                              Play
+                    
+                    li.active(class='{{#if isTvPage}} {{/if}}')
+                        a(href='/tv', title='Watch live games')
+                            i.fa.fa-eye
+                              Tv
+                    
+                    //li.active(class='{{#if isSearchPage}} {{/if}}')
+                    //    a(href='/search', title='Search a game')
+                    //        i.fa.fa-search
+                    //          Search
+                    //             //{{#if user}}
+                    //
+                    //li.active(class='{{#if isAccountPage}} {{/if}}')
+                    //    a(href='/account', title='My account')
+                    //        span#loggedUser(data-user='{{ user.name }}')
+                    //        i.fa.fa-user
+                    //          //{{ user.name }}
+                    //
+                    //li
+                    //    a(href='/logout', title='Sign out')
+                    //        i.fa.fa-sign-out
+                    //             //{{else}}
+                    //
+                    //li.active(class='{{#if isLoginPage}} {{/if}}')
+                    //    a(href='/login')
+                    //        i.fa.fa-sign-in
+                    //          Sign in
+                    //             //{{/if}}
+                
+                h3
+                    i.fa.fa-group
+                      Square SquareSmash
+            
+            .content
+                .row
+                    .panel.panel-primary
+                        .panel-heading
+                            h3.panel-title Welcome to Chess Hub! Here is the quote of the day
+                                .panel-body
+                            blockquote
+                                p {{ quote.content }}
+                                    footer {{ quote.author }}
+                    .row
+                        .col-md-6.trg
+                            .panel.panel-info
+                                .panel-heading
+                                    h3.panel-title Top rated live game on Chess Hub
+                                        .panel-body
+                                    #trg
+                                        .caption
+                                    h5.text-center
+                                        i.fa.fa-circle-o
+                                            G. Kasparov
+                                        em vs
+                                            i.fa.fa-circle
+                                        V. Anand
+                                            h5.text-center
+                                        a(href='/tv')
+                                            i.fa.fa-eye
+                                                View game on Chess Hub Tv
+                                    .col-md-6.pod
+                            .panel.panel-info
+                                .panel-heading
+                                    h3.panel-title Puzzle of the day
+                                        .panel-body
+                                    #pod(data-fen='{{ puzzle.content }}')
+                                        .caption
+                                    h5.text-center {{ puzzle.comment }}
+                                        h5.text-center
+                                    a#podSolution(href='javascript:void(0)', data-toggle='popover', data-placement='bottom', data-content='{{ puzzle.solution }}')
+                                        i.fa.fa-question-circle
+                                            Show solution
+                                    #logoutSuccess(hidden='hidden') {{ logoutSuccessMessage }}
+                                    #registerSuccess(hidden='hidden') {{ registerSuccessMessage }}
+                        #welcomeMessage(hidden='hidden') {{ welcomeMessage }}
+            .footer
+                p
+                    copy SquareSmash 2016
+                p
+                    a(href='/monitor')
+                        i.fa.fa-dashboard
+                          service status
+
+
+        // /container
+        script(type='text/javascript', src='/bower_components/jquery/dist/jquery.min.js')
+        script(type='text/javascript', src='/bower_components/bootstrap/dist/js/bootstrap.min.js')
+        script(type='text/javascript', src='/bower_components/chessboardjs/js/chessboard.min.js')
+        script(type='text/javascript', src='/bower_components/chessjs/dist/chess.min.js')
+        script(type='text/javascript', src='/bower_components/lodash/dist/lodash.min.js')
+        script(type='text/javascript', src='/bower_components/moment/min/moment.min.js')
+        script(type='text/javascript', src='/bower_components/messenger/build/js/messenger.min.js')
+        script(type='text/javascript', src='/bower_components/messenger/build/js/messenger-theme-future.js')
+        script(type='text/javascript', src='/bower_components/highcharts/highcharts.js')
+        script(type='text/javascript', src='/socket.io/socket.io.js')
+        script(type='text/javascript', src='/javascripts/squaresmash.js')
