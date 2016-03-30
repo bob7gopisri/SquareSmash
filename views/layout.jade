@@ -9,13 +9,13 @@ html
         
         meta(name='viewport', content='width=device-width, initial-scale=1')
         
-        meta(name='author', content='Mahmoud Ben Hassine')
+        meta(name='author', content='Gopi Srinath')
         
         link(rel='stylesheet', href='/bower_components/bootstrap/dist/css/bootstrap.min.css')
         
         link(rel='stylesheet', href='/bower_components/fontawesome/css/font-awesome.min.css')
-        
-        link(rel='stylesheet', href='/bower_components/chessboardjs/css/chessboard.min.css')
+
+        //link(rel='stylesheet', href='/bower_components/chessboardjs/css/chessboard.min.css')
         
         link(rel='stylesheet', href='/bower_components/messenger/build/css/messenger.css')
         
@@ -23,7 +23,7 @@ html
         
         link(rel='stylesheet', href='/bower_components/messenger/build/css/messenger-theme-future.css')
         
-        link(rel='stylesheet', href='/stylesheets/squaresmash.css')
+        link(rel='stylesheet', href='bower_components/smash/squaresmash.css')
     body
         .container
             .header
@@ -31,95 +31,46 @@ html
                     li.active(class='{{#if isHomePage}} {{/if}}')
                         a(href='/', title='Go to home page')
                             i.fa.fa-home
-                              Home
-                    
+                            |  Home
                     li.active(class='{{#if isPlayPage}} {{/if}}')
                         a(href='/play', title='Create a new game')
                             i.fa.fa-gamepad
-                              Play
-                    
-                    li.active(class='{{#if isTvPage}} {{/if}}')
+                            |  Play
+                    //li.active(class='{{#if isTvPage}} {{/if}}')
                         a(href='/tv', title='Watch live games')
                             i.fa.fa-eye
-                              Tv
-                    
-                    //li.active(class='{{#if isSearchPage}} {{/if}}')
-                    //    a(href='/search', title='Search a game')
-                    //        i.fa.fa-search
-                    //          Search
-                    //             //{{#if user}}
-                    //
+                            |  Tv
+                    li.active(class='{{#if isSearchPage}} {{/if}}')
+                        a(href='/search', title='Search a game')
+                            i.fa.fa-search
+                            |  Search
                     //li.active(class='{{#if isAccountPage}} {{/if}}')
-                    //    a(href='/account', title='My account')
-                    //        span#loggedUser(data-user='{{ user.name }}')
-                    //        i.fa.fa-user
-                    //          //{{ user.name }}
-                    //
+                        a(href='/account', title='My account')
+                            span#loggedUser(data-user='{{ user.name }}')
+                            i.fa.fa-user
+                            |  {{ user.name }}
                     //li
-                    //    a(href='/logout', title='Sign out')
-                    //        i.fa.fa-sign-out
-                    //             //{{else}}
-                    //
-                    //li.active(class='{{#if isLoginPage}} {{/if}}')
-                    //    a(href='/login')
-                    //        i.fa.fa-sign-in
-                    //          Sign in
-                    //             //{{/if}}
-                
+                        a(href='/logout', title='Sign out')
+                            i.fa.fa-sign-out
+                             //    {{else}}
+                    li.active(class='{{#if isLoginPage}} {{/if}}')
+                        a(href='/login')
+                            i.fa.fa-sign-in
+                            |  Sign in
                 h3
                     i.fa.fa-group
-                      Square SquareSmash
-            
-            .content
-                .row
-                    .panel.panel-primary
-                        .panel-heading
-                            h3.panel-title Welcome to Chess Hub! Here is the quote of the day
-                                .panel-body
-                            blockquote
-                                p {{ quote.content }}
-                                    footer {{ quote.author }}
-                    .row
-                        .col-md-6.trg
-                            .panel.panel-info
-                                .panel-heading
-                                    h3.panel-title Top rated live game on Chess Hub
-                                        .panel-body
-                                    #trg
-                                        .caption
-                                    h5.text-center
-                                        i.fa.fa-circle-o
-                                            G. Kasparov
-                                        em vs
-                                            i.fa.fa-circle
-                                        V. Anand
-                                            h5.text-center
-                                        a(href='/tv')
-                                            i.fa.fa-eye
-                                                View game on Chess Hub Tv
-                                    .col-md-6.pod
-                            .panel.panel-info
-                                .panel-heading
-                                    h3.panel-title Puzzle of the day
-                                        .panel-body
-                                    #pod(data-fen='{{ puzzle.content }}')
-                                        .caption
-                                    h5.text-center {{ puzzle.comment }}
-                                        h5.text-center
-                                    a#podSolution(href='javascript:void(0)', data-toggle='popover', data-placement='bottom', data-content='{{ puzzle.solution }}')
-                                        i.fa.fa-question-circle
-                                            Show solution
-                                    #logoutSuccess(hidden='hidden') {{ logoutSuccessMessage }}
-                                    #registerSuccess(hidden='hidden') {{ registerSuccessMessage }}
-                        #welcomeMessage(hidden='hidden') {{ welcomeMessage }}
+                    |  SquareSmash
+            //.content
+            block content
             .footer
                 p
-                    copy SquareSmash 2016
+                    | © SquareSmash 2016,
+                    i.fa.fa-code
+                    |  with
+                    i.fa.fa-heart
+                    |  by
+                    a(target='_blank', href='https://in.linkedin.com/in/gopi-srinath-samudrala-8b064266') Gopi Srinath
                 p
-                    a(href='/monitor')
-                        i.fa.fa-dashboard
-                          service status
-
 
         // /container
         script(type='text/javascript', src='/bower_components/jquery/dist/jquery.min.js')
