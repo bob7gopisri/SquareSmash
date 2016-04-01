@@ -1,1 +1,40 @@
 extends layout
+block content
+    .row
+        .panel.panel-primary
+            .panel-heading
+                h3.panel-title Welcome to Square Smash! Here is the quote of the day
+
+    .row
+        .col-md-6.trg
+            .panel.panel-info
+                .panel-heading
+                    h3.panel-title Top rated live game on Chess Hub
+                .panel-body
+                    #trg
+                    .caption
+                        h5.text-center
+                            i.fa.fa-circle-o
+                            |  G. Kasparov
+                            em vs
+                            i.fa.fa-circle
+                            |  V. Anand
+                        h5.text-center
+                            a(href='/tv')
+                                i.fa.fa-eye
+                                |  View game on Chess Hub Tv
+        .col-md-6.pod
+            .panel.panel-info
+                .panel-heading
+                    h3.panel-title Puzzle of the day
+                .panel-body
+                    #pod(data-fen='{{ puzzle.content }}')
+                    .caption
+                        h5.text-center {{ puzzle.comment }}
+                        h5.text-center
+                            a#podSolution(href='javascript:void(0)', data-toggle='popover', data-placement='bottom', data-content='{{ puzzle.solution }}')
+                                i.fa.fa-question-circle
+                                |  Show solution
+        #logoutSuccess(hidden='hidden') {{ logoutSuccessMessage }}
+        #registerSuccess(hidden='hidden') {{ registerSuccessMessage }}
+        #welcomeMessage(hidden='hidden') {{ welcomeMessage }}
