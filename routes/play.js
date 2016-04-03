@@ -16,7 +16,7 @@ router.get('/', function(req, res) {
 router.post('/', function(req, res) {
     var side = req.body.side;
     var token = util.randomString(20);
-    res.redirect('/game/' + token + '/' + side);
+    res.redirect('/start_game');
 });
 
 module.exports = router;
