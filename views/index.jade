@@ -1,40 +1,92 @@
-extends layout
-block content
-    .row
-        .panel.panel-primary
-            .panel-heading
-                h3.panel-title Welcome to Square Smash! Here is the quote of the day
+//extends layout
+//block content
+//    .row
+//        .panel.panel-primary
+//            .panel-heading
+//                h3.panel-title Welcome to Square Smash! Here is the quote of the day
+//
+//    .row
+//        .col-md-6.trg
+//            .panel.panel-info
+//                .panel-heading
+//                    h3.panel-title Top rated live game on Chess Hub
+//                .panel-body
+//                    #trg
+//                    .caption
+//                        h5.text-center
+//                            i.fa.fa-circle-o
+//                            |  G. Kasparov
+//                            em vs
+//                            i.fa.fa-circle
+//                            |  V. Anand
+//                        h5.text-center
+//                            a(href='/tv')
+//                                i.fa.fa-eye
+//                                |  View game on Chess Hub Tv
+//        .col-md-6.pod
+//            .panel.panel-info
+//                .panel-heading
+//                    h3.panel-title Puzzle of the day
+//                .panel-body
+//                    #pod(data-fen='{{ puzzle.content }}')
+//                    .caption
+//                        h5.text-center {{ puzzle.comment }}
+//                        h5.text-center
+//                            a#podSolution(href='javascript:void(0)', data-toggle='popover', data-placement='bottom', data-content='{{ puzzle.solution }}')
+//                                i.fa.fa-question-circle
+//                                |  Show solution
+//        #logoutSuccess(hidden='hidden') {{ logoutSuccessMessage }}
+//        #registerSuccess(hidden='hidden') {{ registerSuccessMessage }}
+//        #welcomeMessage(hidden='hidden') {{ welcomeMessage }}
+//Created by gopisrinath on 4/1/16.
+html
+head
+    title Gridworld!
+    script.
+        var module = {exports: {}};
+        var exports = module.exports;
+    script(src='../index.js')
+    script.
+        function init() {
+            var map = [
+                [ 1, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 ],
+                [ 1, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 ],
+                [ 1, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 ],
+                [ 1, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 ],
+                [ 1, 0, 1, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 ],
+                [ 1, 0, 0, 0, 1, 1, 1, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 ],
+                [ 1, 1, 1, 0, 1, 0, 0, 1, 1, 1, 0, 0, 0, 1, 0, 0, 0, 0, 0 ],
+                [ 0, 0, 1, 0, 0, 0, 0, 0, 0, 1, 0, 1, 1, 1, 0, 0, 0, 0, 0 ],
+                [ 0, 0, 1, 0, 1, 0, 0, 1, 1, 1, 0, 1, 0, 0, 0, 0, 0, 0, 0 ],
+                [ 0, 0, 1, 0, 1, 0, 0, 1, 0, 0, 0, 1, 1, 1, 0, 0, 0, 0, 0 ],
+                [ 0, 0, 1, 1, 1, 0, 1, 1, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0 ],
+                [ 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0 ],
+                [ 0, 0, 0, 0, 0, 0, 0, 1, 1, 1, 1, 1, 1, 1, 0, 0, 0, 0, 0 ],
+                [ 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 ],
+                [ 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 ],
+                [ 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 ],
+            ];
+            var canvas = document.getElementById('canvas');
+            var world = new GridWorld(canvas, map[0].length, map.length, {
+                padding       : {top: 10, left: 10, right: 10, bottom: 60},
+                cellSize      : 32,
+                cellSpacing   : 1,
+                resizeCanvas  : true,
+                drawBorder    : true,
+                onclick: function(node) {
+                    console.log("you clicked on node: " + node);
+                }
+            });
+            map.forEach(function(row, y) {
+                row.forEach(function(cell, x) {
+                    if (cell) {
+                        world.setBackgroundColor(x, y, 'black');
+                        world.setBlocked(x, y, true);
+                    }
+                })
+            })
+            world.draw();
+        }
 
-    .row
-        .col-md-6.trg
-            .panel.panel-info
-                .panel-heading
-                    h3.panel-title Top rated live game on Chess Hub
-                .panel-body
-                    #trg
-                    .caption
-                        h5.text-center
-                            i.fa.fa-circle-o
-                            |  G. Kasparov
-                            em vs
-                            i.fa.fa-circle
-                            |  V. Anand
-                        h5.text-center
-                            a(href='/tv')
-                                i.fa.fa-eye
-                                |  View game on Chess Hub Tv
-        .col-md-6.pod
-            .panel.panel-info
-                .panel-heading
-                    h3.panel-title Puzzle of the day
-                .panel-body
-                    #pod(data-fen='{{ puzzle.content }}')
-                    .caption
-                        h5.text-center {{ puzzle.comment }}
-                        h5.text-center
-                            a#podSolution(href='javascript:void(0)', data-toggle='popover', data-placement='bottom', data-content='{{ puzzle.solution }}')
-                                i.fa.fa-question-circle
-                                |  Show solution
-        #logoutSuccess(hidden='hidden') {{ logoutSuccessMessage }}
-        #registerSuccess(hidden='hidden') {{ registerSuccessMessage }}
-        #welcomeMessage(hidden='hidden') {{ welcomeMessage }}
+body(onload='init();')
+    canvas#canvas(width='960', height='640')
