@@ -4,18 +4,22 @@ var favicon = require('serve-favicon');
 var logger = require('morgan');
 var cookieParser = require('cookie-parser');
 var bodyParser = require('body-parser');
+var flash = require('connect-flash');
+var passport = require('passport');
+var LocalStrategy = require('passport-local').Strategy;
 
 var routes = require('./routes/index');
 var users = require('./routes/users');
 var play = require('./routes/play');
 var login = require('./routes/login');
-var flash = require('connect-flash');
 var register = require('./routes/register');
 
 var session = require('express-session');
 var app = express();
+
+
 app.use(cookieParser('secret'));
-app.use(session({cookie: { maxAge: 60000 }}));
+app.use(session({cookie: { maxAge: 60000 }, resave: true, saveUninitialized: true, secret: "123"}));
 app.use(flash());
 // view engine setup
 app.set('views', path.join(__dirname, 'views'));
@@ -28,6 +32,16 @@ app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
+app.use(passport.initialize());
+app.use(passport.session());
+passport.serializeUser(function(user, done) {
+    done(null, user);
+});
+
+passport.deserializeUser(function(user, done) {
+    done(null, user);
+});
+
 
 app.use('/', routes);
 app.use('/play', play);

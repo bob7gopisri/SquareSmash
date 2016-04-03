@@ -2,10 +2,11 @@
  * Created by gopisrinath on 4/1/16.
  */
 var express = require('express');
-//var mongoose = require('mongoose');
-var passport = require('passport');
+var passport = require('../config/passport.js');
 var util = require('../config/util.js');
-//var User = mongoose.model('User');
+var models = require('../models');
+var user_model = models.user;
+//var user = require('../models/user.js')
 
 var router = express.Router();
 
@@ -23,6 +24,7 @@ router.get('/', function(req, res) {
     });
 });
 
+
 router.post('/', function(req, res, next) {
 
     var email = req.body.email;
@@ -30,24 +32,35 @@ router.post('/', function(req, res, next) {
     var password = req.body.password;
     var confirmPassword = req.body.confirmPassword;
 
-    User.findOne({email: email} ,function (err, user) {
+    console.log(email);
+    user_model.findOne({where: {email: email}}).then(function (user) {
+        console.log("where am I");
+        console.log(user);
         if (user !== null) {
+            console.log("Did I come to if");
             req.flash('registerStatus', false);
             req.flash('error', 'We have already an account with email: ' + email);
             res.redirect('/register');
         } else { // no user found
+            console.log("Did I come to else");
             if(password === confirmPassword) {
-                var u = new User({ name: name, email: email, password: util.encrypt(password) });
-                u.save(function (err) {
-                    if (err) {
-                        next(err);
+                var u = user_model.build({ username: name, email: email, password: util.encrypt(password) });
+                u.save().then(function (userobj) {
+                    console.log(userobj);
+                    if (userobj == null) {
+                        console.log("iflog");
+                        //next(err);
                     } else {
+                        console.log("errlog");
                         console.log('new user:' + u);
-                        req.login(u, function(err) {
-                            if (err) { return next(err); }
-                            req.flash('registerStatus', true);
-                            req.flash('registerSuccessMessage', 'Welcome ' + u.name + "!");
-                            return res.redirect('/');
+                        console.log('new userobj:' + userobj);
+                        req.login(u, function(obj) {
+                            console.log(obj);
+                            //if (obj) { return next(obj); }
+
+                            //req.flash('registerStatus', true);
+                            //req.flash('registerSuccessMessage', 'Welcome ' + obj.username + "!");
+                            res.redirect('/');
                         });
                     }
                 });
