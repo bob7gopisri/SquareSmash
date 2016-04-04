@@ -24,7 +24,7 @@ block content
                         .row
                             label Choose The Grid Size
                         .row
-                            label Number of Rows
+                            label(id='num_rows')  Number of Rows
                             select
                                 option(value='m3', selected='') 3
                                 option(value='m4') 4
@@ -35,8 +35,7 @@ block content
                                 option(value='m9') 9
                                 option(value='m10') 10
                         .row
-                            label
-                                | Number of Coloums
+                            label(id='num_col') Number of Coloums
                             select
                                 option(value='n3', selected='') 3
                                 option(value='n4') 4
