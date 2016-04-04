@@ -11,12 +11,12 @@ module.exports = {
       num_rows: {
         type: Sequelize.INTEGER
       },
-      num_column: {
+      num_columns: {
         type: Sequelize.INTEGER
       },
       max_players: {
         allowNull: false,
-        type: Sequelize.INTERGER
+        type: Sequelize.INTEGER
 
       },
       permalink: {

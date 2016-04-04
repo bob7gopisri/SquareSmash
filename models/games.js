@@ -2,8 +2,8 @@
 module.exports = function(sequelize, DataTypes) {
   var games = sequelize.define('games', {
     num_rows: DataTypes.INTEGER,
-    num_column: DataTypes.INTEGER,
-    max_players: DataTypes.INTERGER,
+    num_columns: DataTypes.INTEGER,
+    max_players: DataTypes.INTEGER,
     permalink: DataTypes.STRING,
     status: DataTypes.STRING
   }, {
