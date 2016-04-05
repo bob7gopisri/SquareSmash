@@ -15,10 +15,11 @@ var router = express.Router();
 
 router.get('/play/:id', function (req, resp) {
 
-router.post('/', function(req, res) {
-    var side = req.body.side;
-    var token = util.randomString(20);
-    res.redirect('/start_game');
+    router.post('/', function (req, res) {
+        var side = req.body.side;
+        var token = util.randomString(20);
+        res.redirect('/start_game');
+    });
 });
 
 module.exports = router;
