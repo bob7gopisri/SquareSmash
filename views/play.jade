@@ -9,17 +9,17 @@ block content
                     |  Create a new game
             form#newGameForm(action='/play', method='post')
                 .panel-body
-                    .form-group
-                        label Choose your opponent
-                        .radio
-                            label
-                                input(type='radio', name='opponent', value='1', checked='')
-                                i.fa.fa-group
-                                |  Invite your friend
-                            label
-                                input(type='radio', name='opponent', value='0', checked='')
-                                i.fa.fa-laptop
-                                |  Join Existing Games
+                    //.form-group
+                    //    label Choose your opponent
+                    //    .radio
+                    //        label
+                    //            input(type='radio', name='opponent', value='1', checked='')
+                    //            i.fa.fa-group
+                    //            |  Invite your friend
+                    //        label
+                    //            input(type='radio', name='opponent', value='0', checked='')
+                    //            i.fa.fa-laptop
+                    //            |  Join Existing Games
                     .form-group
                         .row
                             label Choose The Grid Size
@@ -35,7 +35,7 @@ block content
                                 option(value='m9') 9
                                 option(value='m10') 10
                         .row
-                            label(id='num_col') Number of Coloums
+                            label(id='num_columns') Number of Columns
                             select
                                 option(value='n3', selected='') 3
                                 option(value='n4') 4
@@ -45,7 +45,16 @@ block content
                                 option(value='n8') 8
                                 option(value='n9') 9
                                 option(value='n10') 10
-
+                        .row
+                            label(id='max_players') Number of players
+                            select
+                                option(value='p2', selected='') 2
+                                option(value='p3') 3
+                                option(value='p4') 4
+                                option(value='p5') 5
+                                option(value='p6') 6
+                                option(value='p7') 7
+                                option(value='p8') 8
 
                 .panel-footer
                     button.btn.btn-default.center-block(type='submit') Start the Game

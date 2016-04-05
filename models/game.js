@@ -1,6 +1,6 @@
 'use strict';
 module.exports = function(sequelize, DataTypes) {
-  var games = sequelize.define('games', {
+  var game = sequelize.define('game', {
     num_rows: DataTypes.INTEGER,
     num_columns: DataTypes.INTEGER,
     max_players: DataTypes.INTEGER,
@@ -13,5 +13,5 @@ module.exports = function(sequelize, DataTypes) {
       }
     }
   });
-  return games;
+  return game;
 };
