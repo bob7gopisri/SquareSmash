@@ -1,26 +1,55 @@
 var express = require('express');
 var router = express.Router();
+var models = require('../models');
+var game_model = models.game;
 
-/* GET Game page. */
-router.get('/start_game/:permalink', function(req, res, next) {
+
+router.get('/:permalink', function(req, res, next) {
     var permalink = req.params.permalink;
-    var num_rows = req.body.num_rows;
-    var num_columns = req.body.num_columns;
-    var max_players = req.body.max_players;
+    var num_rows = 3;
+    var num_columns = 3;
+    var max_players = 2;
+
+    game_model.findOne({where: {permalink: permalink}}).then(function (game) {
+        console.log("where am I");
+        console.log(game);
+        if (game !== null) {
+            console.log("Did I come to IFFER");
+            console.log(game.num_rows);
+            console.log(game.num_columns);
+            console.log(game.max_players);
+            console.log("how am I");
+            req.flash('error', 'We have already an game name: ' + game);
+            res.send('start_game', { title: 'SquareSmash',
+                num_rows: game.num_rows,
+                num_columns: game.num_columns,
+                max_players: game.max_players});
+        } else { // no user found
+            console.log("Did I come to else");
+        }
+    });
     console.log('In Start Game.js');
     console.log(permalink);
     console.log(num_rows);
     console.log(num_columns);
     console.log(max_players);
 
+    //res.render('start_game', { title: 'SquareSmash',
+    //    num_rows: 3,
+    //    num_columns: num_columns,
+    //    max_players: max_players},function(err, html) {
+    //});
     res.render('start_game', { title: 'SquareSmash',
-        num_rows: num_rows,
+        num_rows: 3,
         num_columns: num_columns,
-        max_players: max_players});
+        max_players: max_players},function(html, err) {
+    });
+
 });
 
 router.get('/', function(req, res) {
     res.status(200).end();
 });
+
 
 module.exports = router;

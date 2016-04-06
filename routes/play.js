@@ -48,6 +48,7 @@ router.post('/', function (req, res) {
                     //next(err);
                 } else {
                     res.redirect('/start_game/' + permalink );
+
                     //req.login(u, function(obj) {
                     //    console.log(obj);
                         //if (obj) { return next(obj); }
