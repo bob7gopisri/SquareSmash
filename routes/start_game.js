@@ -20,7 +20,7 @@ router.get('/:permalink', function(req, res, next) {
             console.log(game.max_players);
             console.log("how am I");
             req.flash('error', 'We have already an game name: ' + game);
-            res.send('start_game', { title: 'SquareSmash',
+            res.render('start_game', { title: 'SquareSmash',
                 num_rows: game.num_rows,
                 num_columns: game.num_columns,
                 max_players: game.max_players});
@@ -28,23 +28,6 @@ router.get('/:permalink', function(req, res, next) {
             console.log("Did I come to else");
         }
     });
-    console.log('In Start Game.js');
-    console.log(permalink);
-    console.log(num_rows);
-    console.log(num_columns);
-    console.log(max_players);
-
-    //res.render('start_game', { title: 'SquareSmash',
-    //    num_rows: 3,
-    //    num_columns: num_columns,
-    //    max_players: max_players},function(err, html) {
-    //});
-    res.render('start_game', { title: 'SquareSmash',
-        num_rows: 3,
-        num_columns: num_columns,
-        max_players: max_players},function(html, err) {
-    });
-
 });
 
 router.get('/', function(req, res) {
