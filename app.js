@@ -13,7 +13,7 @@ var users = require('./routes/users');
 var play = require('./routes/play');
 var login = require('./routes/login');
 var register = require('./routes/register');
-var start_game = require('./routes/start_game');
+var game = require('./routes/game');
 
 
 var session = require('express-session');
@@ -50,7 +50,7 @@ app.use('/play', play);
 app.use('/users', users);
 app.use('/login', login);
 app.use('/register', register);
-app.use('/start_game', start_game);
+app.use('/game', game);
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {

@@ -20,12 +20,13 @@ router.get('/:permalink', function(req, res, next) {
             console.log(game.max_players);
             console.log("how am I");
             req.flash('error', 'We have already an game name: ' + game);
-            res.render('start_game', { title: 'SquareSmash',
+            res.render('game', { title: 'SquareSmash',
                 num_rows: game.num_rows,
                 num_columns: game.num_columns,
                 max_players: game.max_players});
-        } else { // no user found
-            console.log("Did I come to else");
+        } else { // no game found
+            req.flash('error', 'No game found at ' + permalink);
+            res.redirect('/play');
         }
     });
 });

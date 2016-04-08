@@ -19,7 +19,6 @@ router.get('/', function(req, res) {
 router.post('/', function (req, res) {
     //var side = req.body.side;
     var permalink = util.randomString(20);
-    //res.redirect('/start_game');
     var num_rows = req.body.num_rows;
     var num_columns = req.body.num_columns;
     var max_players = req.body.max_players;
@@ -47,7 +46,7 @@ router.post('/', function (req, res) {
                     console.log("iflog");
                     //next(err);
                 } else {
-                    res.redirect('/start_game/' + permalink );
+                    res.redirect('/game/' + permalink );
 
                     //req.login(u, function(obj) {
                     //    console.log(obj);
