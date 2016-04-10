@@ -22,11 +22,14 @@ router.post('/', function (req, res) {
     var num_rows = req.body.num_rows;
     var num_columns = req.body.num_columns;
     var max_players = req.body.max_players;
+    var user_name = req.body.user_name;
+
     console.log('In play.js');
     console.log(permalink);
     console.log(num_rows);
     console.log(num_columns);
     console.log(max_players);
+    console.log(user_name);
 
     game_model.findOne({where: {permalink: permalink}}).then(function (game) {
         console.log("where am I");

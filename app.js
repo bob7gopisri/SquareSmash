@@ -14,6 +14,7 @@ var play = require('./routes/play');
 var login = require('./routes/login');
 var register = require('./routes/register');
 var game = require('./routes/game');
+var start_game = require('./routes/start_game');
 
 
 var session = require('express-session');
@@ -51,6 +52,7 @@ app.use('/users', users);
 app.use('/login', login);
 app.use('/register', register);
 app.use('/game', game);
+app.use('/start_game', start_game);
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {

@@ -1,6 +1,9 @@
 //Created by gopisrinath on 4/1/16.
 extends layout
 block content
+    script(src='https://code.jquery.com/jquery-1.10.2.min.js')
+    script(src='/socket.io/socket.io.js')
+    script(src='javascripts/client.js')
     script(type='text/javascript').
         var lastClicked;
         var grid = clickableGrid(10,10,function(el,row,col,i,thergb){
