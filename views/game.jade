@@ -24,7 +24,6 @@ block content
                         if (lastClicked) lastClicked.className = '';
                         lastClicked.style.background = el;
                     });
-                    socket.emit('add user', 'Gopi', 'GameRoom');
                     document.body.appendChild(grid);
                     function clickableGrid(rows, cols, callback) {
                         var i = 0;

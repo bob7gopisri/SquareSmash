@@ -14,7 +14,9 @@ var play = require('./routes/play');
 var login = require('./routes/login');
 var register = require('./routes/register');
 var game = require('./routes/game');
+var game_user = require('./routes/game_user');
 var start_game = require('./routes/start_game');
+var server_module = require('./helpers/server_module.js');
 
 
 var session = require('express-session');
@@ -35,6 +37,7 @@ app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
+app.use(express.static(path.join(__dirname, 'helpers')));
 app.use(passport.initialize());
 app.use(passport.session());
 passport.serializeUser(function(user, done) {
@@ -53,6 +56,7 @@ app.use('/login', login);
 app.use('/register', register);
 app.use('/game', game);
 app.use('/start_game', start_game);
+app.use('/game_user', game_user);
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {

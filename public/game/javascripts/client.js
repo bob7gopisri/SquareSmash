@@ -36,15 +36,19 @@ $(function () {
   function setUsername() {
     username = cleanInput($usernameInput.val().trim());
     console.log($usernameInput);
-    var room = 'xyz';
-    // If the username is valid
+    var url = document.URL;
+     var res = url.split("game/");
+
+      var room = res[1];
+      var color = getUsernameColor(username);
+      // If the username is valid
     if (username) {
       $loginPage.fadeOut();
       $gridPage.show();
       $loginPage.off('click');
       $currentInput = $inputMessage.focus();
       // Tell the server your username
-      socket.emit('add user', username, room);
+      socket.emit('add user', username, room, color);
     }
   }
 
@@ -187,6 +191,7 @@ $(function () {
     if (!(event.ctrlKey || event.metaKey || event.altKey)) {
       $currentInput.focus();
     }
+
     // When the client hits ENTER on their keyboard
     if (event.which === 13) {
       if (username) {
