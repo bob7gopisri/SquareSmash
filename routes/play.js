@@ -5,6 +5,7 @@ var express = require('express');
 var util = require('../config/util.js');
 var models = require('../models');
 var game_model = models.game;
+var game_grid_model = models.game_grid;
 
 var router = express.Router();
 
@@ -31,6 +32,8 @@ router.post('/', function (req, res) {
     console.log(max_players);
     console.log(user_name);
 
+    var bulk_payload = createBulkGridPayload(num_rows, num_columns, permalink);
+    console.log(bulk_payload);
     game_model.findOne({where: {permalink: permalink}}).then(function (game) {
         console.log("where am I");
         console.log(game);
@@ -49,22 +52,34 @@ router.post('/', function (req, res) {
                     console.log("iflog");
                     //next(err);
                 } else {
-                    res.redirect('/game/' + permalink );
+                    var grid = game_grid_model.bulkCreate(bulk_payload).then(function() {
+                        var grid = game_grid_model.findAll({where: {game_id: permalink}});
+                        console.log(grid);
 
-                    //req.login(u, function(obj) {
-                    //    console.log(obj);
-                        //if (obj) { return next(obj); }
-
-                        //req.flash('registerStatus', true);
-                        //req.flash('registerSuccessMessage', 'Welcome ' + obj.username + "!");
-                        //res.redirect('/');
-                    //});
+                        g.updateAttributes({status: 'created'}).then(function (result) {
+                            if (result == null) {
+                                res.status(500).end();
+                            }
+                            else {
+                                res.redirect('/game/' + permalink);
+                            }
+                        });
+                    });
                 }
             });
-
         }
     });
 });
+
+function createBulkGridPayload(num_rows, num_columns, permalink) {
+    var payload = new Array(num_rows*num_columns);
+    for(i=0;i<num_rows;i++){
+        for(j=0;j<num_columns;j++){
+            payload[i*num_columns+j] = {row_id: i, column_id: j, game_id: permalink, is_clicked: 0};
+        }
+    }
+    return payload;
+}
 
 
 module.exports = router;

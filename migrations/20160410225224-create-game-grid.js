@@ -21,7 +21,8 @@ module.exports = {
         type: Sequelize.STRING
       },
       is_clicked: {
-        type: Sequelize.BOOLEAN
+        type: Sequelize.BOOLEAN,
+        defaultValue: 0
       },
       createdAt: {
         allowNull: false,

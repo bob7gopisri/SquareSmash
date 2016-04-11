@@ -4,7 +4,8 @@ module.exports = function(sequelize, DataTypes) {
     game_id: DataTypes.STRING,
     user_name: DataTypes.STRING,
     user_color: DataTypes.STRING,
-    user_status: DataTypes.BOOLEAN
+    user_status: DataTypes.BOOLEAN,
+    user_score: DataTypes.INTEGER
   }, {
     classMethods: {
       associate: function(models) {

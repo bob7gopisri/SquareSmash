@@ -18,7 +18,12 @@ module.exports = {
         type: Sequelize.STRING
       },
       user_status: {
-        type: Sequelize.BOOLEAN
+        type: Sequelize.BOOLEAN,
+        defaultValue: 1
+      },
+      user_score: {
+        type: Sequelize.INTEGER,
+        defaultValue: 0
       },
       createdAt: {
         allowNull: false,

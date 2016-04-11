@@ -9,15 +9,17 @@ module.exports = {
         type: Sequelize.INTEGER
       },
       num_rows: {
-        type: Sequelize.INTEGER
+        type: Sequelize.INTEGER,
+        defaultValue: 3
       },
       num_columns: {
-        type: Sequelize.INTEGER
+        type: Sequelize.INTEGER,
+        defaultValue: 3
       },
       max_players: {
         allowNull: false,
-        type: Sequelize.INTEGER
-
+        type: Sequelize.INTEGER,
+        defaultValue: 2
       },
       permalink: {
         allowNull: false,
@@ -25,7 +27,8 @@ module.exports = {
       },
       status: {
         allowNull: false,
-        type: Sequelize.STRING
+        type: Sequelize.STRING,
+        defaultValue: 'init'
       },
       createdAt: {
         allowNull: false,
