@@ -1,7 +1,7 @@
-var Client = require('node-rest-client').Client;
 var request = require('request');
 
-var client = new Client();
+var refresh_time = 2000;
+exports.refresh_time = refresh_time;
 
 module.exports = {
 
@@ -130,7 +130,8 @@ module.exports = {
 
     },
 
-    updateGameStatus: function(room, status, callback){
+    updateGameStatus: function(room, status, callback)
+    {
         var return_response = {};
 
         /* Update Game status */
@@ -145,8 +146,158 @@ module.exports = {
             }
             callback(return_response);
         });
+    },
+
+    updateGridCell: function(room, color, row_id, column_id, callback)
+    {
+        var return_response = {};
+
+        /* Update grid cell with the color for current game */
+        request({
+            url: 'http://localhost:3000/game_grid/update_cell/' + room,
+            qs: {from: 'server', time: +new Date()}, //Query string data
+            method: 'PUT',
+            json: {
+                row_id: row_id,
+                column_id: column_id,
+                color: color
+            }
+        }, function(error, response, body) {
+            if (!error && response.statusCode == 200) {
+                var game_grid = JSON.parse(body);
+                return_response = {
+                    response_code: 200,
+                    game_grid: game_grid
+                };
+            }
+            else {
+                return_response = {
+                    response_code: 400,
+                    game_grid: []
+                };
+            }
+            callback(return_response);
+        });
+    },
+
+    updateUserScore: function(room, username, callback)
+    {
+        var return_response = {};
+
+        /* Update user score for current game */
+        request({
+            url: 'http://localhost:3000/game_user/update_score/' + room + '/' + user_name,
+            qs: {from: 'server', time: +new Date()}, //Query string data
+            method: 'PUT',
+            json: {
+            }
+        }, function(error, response, body) {
+            if (!error && response.statusCode == 200) {
+                var game_users = JSON.parse(body);
+                return_response = {
+                    response_code: 200,
+                    game_users: game_users
+                };
+            }
+            else {
+                return_response = {
+                    response_code: 400,
+                    game_users: []
+                };
+            }
+            callback(return_response);
+        });
+    },
+
+    checkAndUpdateGameStatus: function(grid, game_users, room, callback){
+        var grid_complete = 1;
+        for (i=0; i < grid.length; i++){
+            if(grid[i].color == null){
+                grid_complete = 0;
+                break;
+            }
+        }
+        var game_winners = [game_users[0].user_name];
+        var game_winner_score = game_users[0].user_score;
+        var game_winner_count = 1;
+        if (grid_complete){
+            for (i=1;i<game_users.length; i++){
+                if (game_winner_score == game_users[i].user_score){
+                    game_winners.push(game_users[i].user_name);
+                }
+                else{
+                    break;
+                }
+            }
+            /* Update the game status for current game */
+            request({
+                url: 'http://localhost:3000/game/' + room + '/complete',
+                qs: {from: 'server', time: +new Date()}, //Query string data
+                method: 'PUT',
+                json: {
+                }
+            }, function(error, response, body) {
+                if (!error && response.statusCode == 200) {
+                    return_response = {
+                        response_code: 200,
+                        game_status: 'complete',
+                        game_winners: game_winners
+                    };
+                }
+                else {
+                    return_response = {
+                        response_code: 400,
+                        game_status: 'complete',
+                        game_winners: game_winners
+                    };
+                }
+                callback(return_response);
+            });
+        }
+        else{
+            return_response = {
+                response_code: 200,
+                game_status: 'in_progress',
+                game_winners: null
+            };
+            callback(return_response);
+        }
+    },
+
+    updateGameUserStatus: function(room, username, status, callback)
+    {
+        var return_response = {};
+
+        /* Update user score for current game */
+        request({
+            url: 'http://localhost:3000/game_user/update_status/' + room + '/' + user_name + '/' + status,
+            qs: {from: 'server', time: +new Date()}, //Query string data
+            method: 'PUT',
+            json: {
+            }
+        }, function(error, response, body) {
+            if (!error && response.statusCode == 200) {
+                var game_users = JSON.parse(body);
+                var active_users = 0;
+                for (i=0;i<game_users.length;i++){
+                    if (game_users[i].user_status == 1){
+                        active_users++;
+                    }
+                }
+                return_response = {
+                    response_code: 200,
+                    game_users: game_users,
+                    active_users: active_users
+                };
+            }
+            else {
+                return_response = {
+                    response_code: 400,
+                    game_users: []
+                };
+            }
+            callback(return_response);
+        });
     }
-
-
 };
 

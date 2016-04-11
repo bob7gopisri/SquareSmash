@@ -50,14 +50,14 @@ router.put('/:permalink/:status', function(req, res, next) {
         if (game) {
             game.updateAttributes({status: status}).then(function (result) {
                 if (result == null){
-                    res.status(500).end();
+                    res.send(400, null);
                 }
                 else {
-                    res.send(result);
+                    res.send(200, result);
                 }
             });
         } else { // no game found
-            res.status(400).end();
+            res.send(400, null);
         }
     });
 });

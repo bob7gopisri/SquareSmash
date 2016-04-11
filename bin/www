@@ -38,21 +38,14 @@ var io = require('socket.io')(server);
  * Socket functionality Server side
  */
 io.on('connection', function (socket) {
-    var addedUser = false;
 
-    // when the client emits 'new message', this listens and executes
-    socket.on('new message', function (data) {
-        console.log("did I come here");
-        // we tell the client to execute 'new message'
-        socket.broadcast.emit('new message', {
-            username: socket.username,
-            message: data
-        });
-    });
-
-    // when the client emits 'add user', this listens and executes
+    // When the add tries to join a game...
+    // 1) Check if max_users is exceeded or not
+    // 2) If not add the user, update his color
+    // 3) Start game if Users >= 2
+    // 4) Update game status
+    // 5) Broad events accordinly
     socket.on('add user', function (username, room, color) {
-        if (addedUser) return;
 
         // we store the username in the socket session for this client
         socket.username = username;
@@ -153,31 +146,115 @@ io.on('connection', function (socket) {
         });
     });
 
-    // when the client emits 'typing', we broadcast it to others
-    socket.on('typing', function () {
-        socket.broadcast.emit('typing', {
-            username: socket.username
+    // When the user clicks on a grid, Check if
+    // 1) A valid click
+    // 2) If game is over
+    // 3) If game is not over, wait for some time and resume
+    // 4) Broadcast events accordingly
+    socket.on('user click', function (username, room, color, row_id, column_id) {
+        var response_game_users = null;
+        var response_grid = null;
+        var broadcast_payload = {};
+
+        var game_winners = null;
+        var game_status = 'in_progress';
+        server_module.updateGridCell(room, color, row_id, column_id, function callback(response) {
+            var grid_response_code = response.response_code;
+            response_grid = response.game_grid;
+            if (grid_response_code  == 200 &&  response_grid.length > 0){
+                server_module.updateUserScore(room, username, function callback(game_user_response){
+                    var game_user_response_code = game_user_response.response_code;
+                    response_game_users = game_user_response.game_users;
+                    if (game_user_response_code  == 200){
+                        /* Updated the Grid Cell and User Score successfully.. Check Game status */
+                        server_module.checkAndUpdateGameStatus(response_grid, response_game_users, room,
+                            function callback(game_user_response){
+                                var game_user_res = game_user_response.response_code;
+                                game_winners = game_user_response.game_winners;
+                                game_status = game_user_response.game_status;
+                                if (game_status == 'completed'){
+                                    /* GAME OVER */
+                                    broadcast_payload = {
+                                        game_grid: response_grid,
+                                        game_users: response_game_users,
+                                        game_winners: game_winners,
+                                        game_status: game_status,
+                                        room: room,
+                                        response_code: 200
+                                    };
+                                    socket.broadcast.to(room).emit('game over', broadcast_payload);
+                                }
+                                else{
+
+                                    broadcast_payload = {
+                                        game_grid: response_grid,
+                                        game_users: response_game_users,
+                                        room: room,
+                                        response_code: 200
+                                    };
+
+                                    /* Emit game wait event to updated grid cells and user score */
+                                    socket.broadcast.to(room).emit('game wait', broadcast_payload);
+                                    setTimeout(function(){
+                                        /* Wait before re-starting the click process on client side */
+                                        socket.broadcast.to(room).emit('game resume', broadcast_payload);
+                                    }, server_module.refresh_time);
+                                }
+                            });
+                    }
+                    else{
+                        /* Error in the user.. GAME ERROR */
+                        broadcast_payload = {
+                            game_grid: response_grid,
+                            game_users: null,
+                            room: room,
+                            response_code: 400
+                        };
+                        socket.broadcast.to(room).emit('game error', broadcast_payload);
+                    }
+                });
+            }
+            else{
+                /* Error in the user.. GAME ERROR */
+                broadcast_payload = {
+                    game_grid: null,
+                    game_users: null,
+                    room: room,
+                    response_code: 400
+                };
+                socket.broadcast.to(room).emit('game error', broadcast_payload);
+            }
         });
     });
 
-    // when the client emits 'stop typing', we broadcast it to others
-    socket.on('stop typing', function () {
-        socket.broadcast.emit('stop typing', {
-            username: socket.username
-        });
-    });
-
-    // when the user disconnects.. perform this
+    // when the user disconnects..
+    // 1) Update the User Status
+    // 2) Check if the GameRoom is underplayed
+    // 3) Broadcast events accordingly
     socket.on('disconnect', function () {
-        if (addedUser) {
-            --numUsers;
-
-            // echo globally that this client has left
-            socket.broadcast.emit('user left', {
-                username: socket.username,
-                numUsers: numUsers
-            });
-        }
+        server_module.updateGameUserStatus(room, username, '0', function callback(response){
+            var update_response_code = response.response_code;
+            var game_users = response.game_users;
+            var active_users = response.active_users;
+            if (update_response_code == 200 && active_users <= 1){
+                /* No more active users so go back to GAME WAIT */
+                broadcast_payload = {
+                    room: room,
+                    response_code: 200
+                };
+                socket.broadcast.to(room).emit('game wait', broadcast_payload);
+            }
+            else if (update_response_code == 400){
+                /* Error in the user.. GAME ERROR */
+                broadcast_payload = {
+                    game_grid: null,
+                    game_users: null,
+                    room: room,
+                    response_code: 400
+                };
+                socket.broadcast.to(room).emit('game error', broadcast_payload);
+            }
+        });
     });
 });
 
