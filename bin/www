@@ -37,6 +37,7 @@ var io = require('socket.io')(server);
 /**
  * Socket functionality Server side
  */
+// TODO: ADD LOCKING TO ALL SERVER EVENTS
 io.on('connection', function (socket) {
 
     // When the add tries to join a game...
