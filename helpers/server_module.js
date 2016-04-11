@@ -128,6 +128,25 @@ module.exports = {
             callback(return_response);
         });
 
+    },
+
+    updateGameStatus: function(room, status, callback){
+        var return_response = {};
+
+        /* Update Game status */
+        request('http://localhost:3000/game/' + room + '/' + status, function(error, response, body) {
+            if (!error && response.statusCode == 200) {
+                return_response = {
+                    response_code: 200};
+            }
+            else {
+                return_response = {
+                    response_code: 400};
+            }
+            callback(return_response);
+        });
     }
+
+
 };
 

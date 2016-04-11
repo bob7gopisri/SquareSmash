@@ -80,7 +80,29 @@ io.on('connection', function (socket) {
                             room: room,
                             response_code: 200
                         };
-                        socket.broadcast.to(room).emit('game join', broadcast_payload);
+                        if (response_game_users.length == 2) {
+                            /* Update Game status to in_progress */
+                            server_module.updateGameStatus(room, 'in_progress', function callback(game_resp) {
+                                game_response = game_resp.response_code;
+                                if (game_response == 200) {
+                                    socket.broadcast.to(room).emit('game join', broadcast_payload);
+                                }
+                                else {
+                                    /* Error Updating game status */
+                                    broadcast_payload = {
+                                        game_grid: null,
+                                        game_users: response_game_users,
+                                        room: room,
+                                        response_code: 400
+                                    };
+                                    socket.broadcast.to(room).emit('game error', broadcast_payload);
+                                }
+                            });
+                        }
+                        else {
+                            /* Broadcast Game join event */
+                            socket.broadcast.to(room).emit('game join', broadcast_payload);
+                        }
                     }
                     else{
                         /* Error in the grid.. GAME ERROR */

@@ -40,6 +40,29 @@ router.get('/max_players/:permalink', function(req, res, next) {
     });
 });
 
+router.put('/:permalink/:status', function(req, res, next) {
+    var permalink = req.params.permalink;
+    var status = req.params.status;
+
+    /* TODO: Add more validations on status change */
+
+    game_model.findOne({where: {permalink: permalink}}).then(function (game) {
+        if (game) {
+            game.updateAttributes({status: status}).then(function (result) {
+                if (result == null){
+                    res.status(500).end();
+                }
+                else {
+                    res.send(result);
+                }
+            });
+        } else { // no game found
+            res.status(400).end();
+        }
+    });
+});
+
+
 router.get('/', function(req, res) {
     res.status(200).end();
 });
