@@ -58,21 +58,74 @@ io.on('connection', function (socket) {
         socket.username = username;
         socket.room = room;
         socket.join(room);
-        var response_code = '123';
+
+        var response_code = 200;
+        var response_game_users = null;
+        var response_grid = null;
+        var broadcast_payload = {};
         server_module.insertGameUser(username, room, color, function callback(response){
-            response_code = response;
-            ++numUsers;
-            addedUser = true;
-            socket.emit('login', {
-                numUsers: numUsers
-            });
-            // echo globally (all clients) that a person has connected
-            socket.broadcast.to(room).emit('user joined', {
-                username: socket.username,
-                numUsers: numUsers,
-                room: socket.room,
-                color: color,
-                response_code: response_code
+            response_code = response.response_code;
+            response_game_users = response.game_users;
+            server_module.getGameGrid(room, function callback(grid_response){
+                var grid_response_code = grid_response.response_code;
+                response_grid = grid_response.game_grid;
+
+                /* Get the Game Grid */
+                if (response_code == 200 && response_game_users.length >= 2){
+                    /* Successfully Got the grid and Users.. GAME STARTS NOW */
+                    if (grid_response_code  == 200 &&  response_grid.length > 0){
+                        broadcast_payload = {
+                            game_grid: response_grid,
+                            game_users: response_game_users,
+                            room: room,
+                            response_code: 200
+                        };
+                        socket.broadcast.to(room).emit('game join', broadcast_payload);
+                    }
+                    else{
+                        /* Error in the grid.. GAME ERROR */
+                        broadcast_payload = {
+                            game_grid: null,
+                            game_users: response_game_users,
+                            room: room,
+                            response_code: 400
+                        };
+                        socket.broadcast.to(room).emit('game error', broadcast_payload);
+                    }
+                }
+                else if (response_code == 200 && response_game_users.length == 1) {
+                    /* Successfully Got the grid and but only one user..  WAIT for some one to join */
+                    if (grid_response_code  == 200 &&  response_grid.length > 0){
+                        broadcast_payload = {
+                            game_grid: response_grid,
+                            game_users: response_game_users,
+                            room: room,
+                            response_code: 200
+                        };
+                        socket.broadcast.to(room).emit('game wait', broadcast_payload);
+                    }
+                    else{
+                        /* Error in the grid.. GAME ERROR */
+                        broadcast_payload = {
+                            game_grid: null,
+                            game_users: response_game_users,
+                            room: room,
+                            response_code: 400
+                        };
+                        socket.broadcast.to(room).emit('game error', broadcast_payload);
+                    }
+                }
+                else {
+                    /* Error in the user.. GAME ERROR */
+                    broadcast_payload = {
+                        game_grid: response_grid,
+                        game_users: null,
+                        room: room,
+                        response_code: 400
+                    };
+                    socket.broadcast.to(room).emit('game error', broadcast_payload);
+                }
+
             });
 
         });

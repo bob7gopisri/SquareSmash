@@ -14,8 +14,10 @@ var play = require('./routes/play');
 var login = require('./routes/login');
 var register = require('./routes/register');
 var game = require('./routes/game');
-var game_user = require('./routes/game_user');
 var start_game = require('./routes/start_game');
+var game_user = require('./routes/game_user');
+var game_grid = require('./routes/game_grid');
+
 var server_module = require('./helpers/server_module.js');
 
 
@@ -57,6 +59,7 @@ app.use('/register', register);
 app.use('/game', game);
 app.use('/start_game', start_game);
 app.use('/game_user', game_user);
+app.use('/game_grid', game_grid);
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {

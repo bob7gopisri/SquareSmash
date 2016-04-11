@@ -82,6 +82,20 @@ router.put('/update_status/:game_id/:user_name/:user_status', function(req, res,
     });
 });
 
+router.get('/all_users/:game_id', function(req, res, next) {
+    var game_id = req.params.game_id;
+
+    game_user_model.findAll({where: {game_id: game_id}}).then(function (game_users) {
+        if (game_users !== null) {
+            console.log("IN GET ALL GAME USERS");
+            console.log(game_users);
+            res.send(200, game_users);
+        } else { // no game user found
+            res.send(200, []);
+        }
+    });
+});
+
 router.get('/', function(req, res) {
     res.status(200).end();
 });
