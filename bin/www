@@ -232,7 +232,7 @@ io.on('connection', function (socket) {
     // 1) Update the User Status
     // 2) Check if the GameRoom is underplayed
     // 3) Broadcast events accordingly
-    socket.on('disconnect', function () {
+    socket.on('disconnect', function (username, room) {
         server_module.updateGameUserStatus(room, username, '0', function callback(response){
             var update_response_code = response.response_code;
             var game_users = response.game_users;

@@ -135,7 +135,14 @@ module.exports = {
         var return_response = {};
 
         /* Update Game status */
-        request('http://localhost:3000/game/' + room + '/' + status, function(error, response, body) {
+        request({
+            url: 'http://localhost:3000/game/update_status/' + room + '/' + status,
+            qs: {from: 'server', time: +new Date()}, //Query string data
+            method: 'PUT',
+            json: {
+
+            }
+        }, function(error, response, body) {
             if (!error && response.statusCode == 200) {
                 return_response = {
                     response_code: 200};
@@ -231,7 +238,7 @@ module.exports = {
             }
             /* Update the game status for current game */
             request({
-                url: 'http://localhost:3000/game/' + room + '/complete',
+                url: 'http://localhost:3000/game/update_status/' + room + '/complete',
                 qs: {from: 'server', time: +new Date()}, //Query string data
                 method: 'PUT',
                 json: {
