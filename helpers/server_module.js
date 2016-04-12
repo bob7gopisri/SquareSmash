@@ -277,7 +277,7 @@ module.exports = {
 
         /* Update user score for current game */
         request({
-            url: 'http://localhost:3000/game_user/update_status/' + room + '/' + user_name + '/' + status,
+            url: 'http://localhost:3000/game_user/update_status/' + room + '/' + username + '/' + status,
             qs: {from: 'server', time: +new Date()}, //Query string data
             method: 'PUT',
             json: {
