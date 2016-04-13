@@ -137,9 +137,12 @@ When the user disconnects..
 
 ### Done
 1) I have learned from scratch and used Nodejs/Expressjs/Jade/Sequelize(mysql)/Socket IO Stack for building the app.
+
 2) I am done with the server side game logic implementation and APIs required to start/update/join games.
+
 3) Broadcasting socket events to Game Rooms for various server side events.
 
 ### ToDo
 1) Fix the client side UI for Grid rendering and clicking and Game Join UI as well
+
 2) Handle the user click event to emit the necessary events to server
