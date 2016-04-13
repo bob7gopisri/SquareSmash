@@ -70,8 +70,11 @@ I have used NodeJS/ExpressJS web framework to build the web app. Jade to render 
 On opening the web page, a home page is rendered with the a facility to join the game.
 Click on Play to create a new game. A config is taken as input on the number of rows, number of columns and max number of players. On submit, it will create a Game in "init" state. This call will in itself create a Game Grid of size #rows x #columns, with default color. Then move the status of the game to "created" state.
 On rendering the game page, User would be asked to input his username, and "add user' event is to be raised to the server, which will handle the necessary logic for the user addition to the game. Once the user is successfully added(User is added to Socket with room name "permalink" of the grid), game grid is to be rendered.
+
 On click of User grid, an event is raised to the server "user click", which will handle the logic of user click,  broadcast the entire grid as a "game wait" event, to all the users to update their grid(Reason to broadcast the entire grid is to handle the logic of any user's disconnection/idleness for a while should have all the clicked grid cells as per the actual grid). This is followed by wait for "refresh_time" on server side, before "game resume" event is broadcasted to all the clients.
+
 On user disconnect, user's status changed to FALSE for the particular game and set to TRUE on reconnect.
+
 Once the game is ended(last cell is clicked.. Logic handled in User Click server side event), a "game over" event is broadcasted to all the clients of the room, with the announcement of "Game Winners".
 
 ### APIs
