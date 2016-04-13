@@ -5,16 +5,14 @@ var logger = require('morgan');
 var cookieParser = require('cookie-parser');
 var bodyParser = require('body-parser');
 var flash = require('connect-flash');
-var passport = require('passport');
-var LocalStrategy = require('passport-local').Strategy;
 
 var routes = require('./routes/index');
-var users = require('./routes/users');
+//var users = require('./routes/users');
 var play = require('./routes/play');
-var login = require('./routes/login');
-var register = require('./routes/register');
+//var login = require('./routes/login');
+//var register = require('./routes/register');
 var game = require('./routes/game');
-var start_game = require('./routes/start_game');
+var search = require('./routes/search');
 var game_user = require('./routes/game_user');
 var game_grid = require('./routes/game_grid');
 
@@ -40,24 +38,24 @@ app.use(bodyParser.urlencoded({ extended: false }));
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
 app.use(express.static(path.join(__dirname, 'helpers')));
-app.use(passport.initialize());
-app.use(passport.session());
-passport.serializeUser(function(user, done) {
-    done(null, user);
-});
-
-passport.deserializeUser(function(user, done) {
-    done(null, user);
-});
+//app.use(passport.initialize());
+//app.use(passport.session());
+//passport.serializeUser(function(user, done) {
+//    done(null, user);
+//});
+//
+//passport.deserializeUser(function(user, done) {
+//    done(null, user);
+//});
 
 
 app.use('/', routes);
 app.use('/play', play);
-app.use('/users', users);
-app.use('/login', login);
-app.use('/register', register);
+//app.use('/users', users);
+//app.use('/login', login);
+//app.use('/register', register);
 app.use('/game', game);
-app.use('/start_game', start_game);
+app.use('/search', search);
 app.use('/game_user', game_user);
 app.use('/game_grid', game_grid);
 

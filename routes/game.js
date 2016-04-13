@@ -42,6 +42,19 @@ router.put('/update_status/:permalink/:status', function(req, res, next) {
     });
 });
 
+/* Get all active games */
+router.get('/active_games', function(req, res, next) {
+
+    var response = {};
+    game_model.findAll({where: {status: ['created', 'in_progress']}}).then(function (games) {
+        if (games !== null) {
+            res.send(200, games);
+        } else { // no active games found
+            res.send(200, []);
+        }
+    });
+});
+
 router.get('/:permalink', function(req, res, next) {
     var permalink = req.params.permalink;
 

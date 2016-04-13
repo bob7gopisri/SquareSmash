@@ -8,7 +8,7 @@ router.get('/', function(req, res) {
     console.log("yoyo honeysingh");
 
 
-  res.render('start_game', {
+  res.render('search', {
     title: 'SquareSmash - Game'});
 });
 
